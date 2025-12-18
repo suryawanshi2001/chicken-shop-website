@@ -1,0 +1,454 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ताजे आणि स्वच्छ चिकन शॉप</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- AOS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
+    <style>
+html, body{
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
+     
+}
+/* FULL SCREEN VIDEO */
+.bg-video{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-2;
+}
+
+/* DARK OVERLAY */
+.overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.55);
+    z-index:-1;
+}
+
+/* CONTENT ABOVE VIDEO */
+.page-content{
+    position:relative;
+    z-index:1;
+}
+
+/* HOME */
+.home-section{
+    min-height:100vh;
+    padding-bottom:120px;
+}
+
+.main-title{
+    font-size:3.5rem;
+    font-weight:900;
+    text-align:center;
+    margin-top:90px;
+    color:#fff;
+    text-shadow:0 0 25px red;
+}
+
+/* cards */
+.category-card{
+    border-radius:20px;
+    overflow:hidden;
+    transition:.3s;
+}
+.category-card:hover{ transform:scale(1.08); }
+.category-card img{
+    height:200px;
+    width:100%;
+    object-fit:cover;
+}
+.category-title{
+    background:#000;
+    color:#fff;
+    text-align:center;
+    font-size:1.5rem;
+    font-weight:bold;
+    padding:10px;
+}
+
+.card img{
+    height:200px;
+    object-fit:cover;
+}
+.card:hover{
+    transform:scale(1.05);
+    transition:.3s;
+}
+
+/* VIDEO CARDS */
+.video-card{
+    height:220px;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 0 25px rgba(0,0,0,.6);
+    transition:.4s;
+}
+.video-card video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+.video-card:hover{
+    transform:scale(1.07) translateY(-8px);
+    box-shadow:0 0 35px red;
+}
+
+@media(max-width:768px){
+    .video-card{ height:180px; }
+}
+
+/* FOOTER */
+footer{
+    background:rgba(0,0,0,0.85);
+    color:#fff;
+    padding:40px 0;
+}
+footer a{ color:#00ff88; text-decoration:none; }
+
+/* WhatsApp */
+.whatsapp-float{
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    background:#25D366;
+    color:white;
+    font-size:30px;
+    padding:15px 18px;
+    border-radius:50%;
+    box-shadow:0 0 20px #000;
+    z-index:999;
+    text-decoration:none;
+}
+/* LOCATION SECTION */
+.location-card{
+    background:rgba(0,0,0,0.8);
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 0 30px rgba(255,0,0,0.4);
+    transition:0.3s;
+}
+
+.location-card:hover{
+    transform:scale(1.03);
+}
+
+.location-img{
+    width:100%;
+    height: 400px;
+    object-fit:cover;
+    border-radius:15px;
+}
+
+.location-qr{
+    max-width:240px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.location-qr:hover{
+    transform:scale(1.08);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Video -->
+<video autoplay muted loop class="bg-video">
+    <source src="{% static 'shop/videos/chicken-bg.mp4' %}" type="video/mp4">
+</video>
+<div class="overlay"></div>
+ 
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/">🍗 भाई-भाई चिकन शॉप कोपर्डी</a>
+
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="/products/">Products</a></li>
+                <li class="nav-item"><a class="nav-link" href="/products/">Order</a></li>
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="/my-orders/">My Orders</a></li>
+                {% endif %}
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <span class="nav-link text-warning">👤 {{ user.first_name|default:user.username }}</span>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-danger btn-sm" href="/logout/">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item"><a class="btn btn-success btn-sm me-2" href="/login/">Login</a></li>
+                <li class="nav-item"><a class="btn btn-warning btn-sm" href="/signup/">Signup</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- HOME -->
+<div class="container home-section">
+    <h1 class="main-title">ताजे आणि स्वच्छ चिकन आणि मासे शॉप</h1>
+    
+    <!-- Categories -->
+    <div class="row g-4 mt-5 justify-content-center">
+        {% for c in categories %}
+        <div class="col-md-3 col-sm-6" data-aos="zoom-in">
+            <a href="/products/" style="text-decoration:none">
+                <div class="category-card shadow-lg">
+                    <img src="{{ c.image.url }}">
+                    <div class="category-title">{{ c.name }}</div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+{% load static %}
+
+<div class="container mt-5">
+
+    <!-- Product Categories -->
+    <div class="row g-4 text-center">
+
+        <div class="col-md-3">
+            <div class="card shadow">
+                <img src="{% static 'shop/images/chicken.jpg' %}" class="card-img-top">
+                <div class="card-body fw-bold">Fresh Chicken</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow">
+                <img src="{% static 'shop/images/egg.jpg' %}" class="card-img-top">
+                <div class="card-body fw-bold">Eggs</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow">
+                <img src="{% static 'shop/images/mutton.jpg' %}" class="card-img-top">
+                <div class="card-body fw-bold">Mutton</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow">
+                <img src="{% static 'shop/images/fish.jpg' %}" class="card-img-top">
+                <div class="card-body fw-bold">Fish</div>
+            </div>
+        </div>
+
+    </div>
+</div>   
+</div>
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-4">
+                <h5>📍 दुकानाचा पत्ता </h5>
+                <p>
+                    कोपर्डी, पोस्ट. शिंदे, ता. कर्जत, जि. अहमदनगर, कुलधरण रोड, 414402
+                </p>
+            </div>
+
+            <div class="col-md-4">
+                <h5>📞 संपर्क </h5>
+                <p>
+                    <Name:h1 > मालक: शाहरुख पठाण</Name:h1><br>
+                    Mobile: <a href="tel:7499124909,">7499124909</a><br>
+                    WhatsApp: <a href="https://wa.me/7499124909">7499124909</a><br>
+                    Email: <a href="mailto:akashsuryawanshi@gmail.com">-</a>
+                </p>
+            </div>
+
+            <div class="col-md-4">
+                <h5>📞 संपर्क </h5>
+                <p>
+                    <Name:h1 > मालक: अकबर पठाण</Name:h1><br>
+                    Mobile: <a href="tel:9561789184">9561789184</a><br>
+                    WhatsApp: <a href="https://wa.me/9561789184">9561789184</a><br>
+                    Email: <a href="mailto:akashsuryawanshi@gmail.com">-</a>
+                </p>
+            </div>
+            <!-- LOCATION / QR SECTION -->
+<div class="container mt-5 mb-5">
+    <h2 class="text-center text-white mb-4">📍 Shop Location</h2>
+
+    <div class="row align-items-center justify-content-center g-4">
+
+        <!-- LEFT IMAGE -->
+        <div class="col-md-4">
+            <div class="location-card text-center">
+                <img src="{% static 'shop/images/shop5.jpg' %}"
+                     class="location-img"
+                     alt="Shop Image">
+                <p class="text-light mt-3 mb-0">चिकन शॉपचे मालक</p>
+            </div>
+        </div>
+
+        <!-- CENTER QR -->
+        <div class="col-md-4 text-center">
+            <div class="location-card">
+                <a href="https://maps.app.goo.gl/KyJPAq2vZvx8NJW59"
+                   target="_blank">
+                    <img src="{% static 'shop/images/qr1.png' %}"
+                         class="img-fluid location-qr"
+                         alt="Shop Location QR">
+                </a>
+                <p class="text-light mt-3 mb-0">
+                    Click QR to Open Google Map <br>
+                    दुकानाचे लोकेशन साठी येथे क्लिक करा
+                </p>
+            </div>
+        </div>
+
+        <!-- RIGHT IMAGE -->
+        <div class="col-md-4">
+            <div class="location-card text-center">
+                <img src="{% static 'shop/images/shop6.jpg' %}"
+                     class="location-img"
+                     alt="Shop Image">
+                <p class="text-light mt-3 mb-0">मासे शॉपचे मालक</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    
+</div>
+
+</div>
+
+
+        </div>
+        <!-- SHOP IMAGE -->
+    <!-- MULTIPLE SHOP IMAGES -->
+<div class="container mt-5">
+    <h2 class="text-center text-white mb-4">🏪 Our Shop Gallery</h2>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow">
+                <img src="{% static 'shop/images/shop1.jpg' %}" class="img-fluid rounded">
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow">
+                <img src="{% static 'shop/images/shop2.jpg' %}" class="img-fluid rounded">
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow">
+                <img src="{% static 'shop/images/shop3.jpg' %}" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- SHOP VIDEOS -->
+<div class="container mt-5 mb-5">
+    <h2 class="text-center text-white mb-4">🎥 Our Shop Videos</h2>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="video-card">
+                <video autoplay muted loop playsinline>
+                    <source src="{% static 'shop/videos/shop1.mp4' %}" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="video-card">
+                <video autoplay muted loop playsinline>
+                    <source src="{% static 'shop/videos/shop2.mp4' %}" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+        <div class="text-center mt-5">
+    <h2 class="text-white">💳 Online Payment</h2>
+    <p class="text-light">Scan & Pay (UPI / GPay / PhonePe)</p>
+
+    <img src="{% static 'shop/images/qr.png' %}"
+         class="img-fluid rounded shadow"
+         style="max-width:250px;">
+</div>
+
+        <hr>
+        <p class="text-center mb-0">© 2025 Bhai-Bhai Chicken Shop | All Rights Reserved | Developer:- Akash Suryawanshi 📱 9309897466</p>
+    </div>
+    
+<a href="https://wa.me/917499124909?text=🙏नमस्कार🙏%20मला%20चिकन%20पायजे%20आहे?%20 आहे का शिल्लक"
+   class="whatsapp-float"
+   target="_blank">
+   💬
+</a>
+
+<style>
+.whatsapp-float{
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    background:#25D366;
+    color:white;
+    font-size:30px;
+    padding:15px 18px;
+    border-radius:50%;
+    box-shadow:0 0 20px #000;
+    z-index:999;
+    text-decoration:none;
+}
+.whatsapp-float:hover{
+    background:#1ebc57;
+}
+</style>
+
+
+
+</footer>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>AOS.init();</script>
+
+</body>
+</html>
