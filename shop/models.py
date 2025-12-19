@@ -37,17 +37,36 @@ class Product(models.Model):
         return self.name
 
 
+# class Order(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     quantity = models.IntegerField(default=1)
+#     total_price = models.IntegerField()
+#     status = models.CharField(max_length=20, default='Pending')
+#     created_at = models.DateTimeField(auto_now_add=True)
+
+#     def __str__(self):
+#         return f"{self.user.username} - {self.product.name}"
+
+
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
-    total_price = models.IntegerField()
-    status = models.CharField(max_length=20, default='Pending')
+    total_price = models.FloatField()
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('Pending', 'Pending'),
+            ('Done', 'Done'),
+        ],
+        default='Pending'
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user.username} - {self.product.name}"
-
 
  
 
