@@ -14,3 +14,19 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chickenshop.settings')
 
 application = get_wsgi_application()
+from pathlib import Path
+import os
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
