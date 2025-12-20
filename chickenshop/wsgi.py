@@ -8,25 +8,25 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 """
 
 import os
-
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chickenshop.settings')
 
 application = get_wsgi_application()
-from pathlib import Path
-import os
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+# from pathlib import Path
+# import os
 
-STATIC_URL = '/static/'
+# BASE_DIR = Path(__file__).resolve().parent.parent
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+# STATIC_URL = '/static/'
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
+# ]
+
+# STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / "media"
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR / "media"
